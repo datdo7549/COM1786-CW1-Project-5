@@ -31,4 +31,12 @@ public interface TripDao {
 
     @Query("UPDATE trip SET picture_path = :path WHERE uid = :id")
     void updatePath(int id, String path);
+
+    @Query("UPDATE Trip SET trip_name = :tripName, destination = :destination, date_trip = :dateTrip, risk = :risk, description = :description  WHERE uid = :id")
+    void editThisTrip(int id,
+                            String tripName,
+                            String destination,
+                            String dateTrip,
+                            String risk,
+                            String description);
 }

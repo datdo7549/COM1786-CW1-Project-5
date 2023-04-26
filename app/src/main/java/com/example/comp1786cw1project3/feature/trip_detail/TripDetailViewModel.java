@@ -56,4 +56,19 @@ public class TripDetailViewModel extends BaseViewModel {
     public void updatePicture(String path) {
         tripDao.updatePath(Objects.requireNonNull(_tripDetail.getValue()).uid, path);
     }
+
+    public void editTrip(String tripName,
+                         String destination,
+                         String dateTrip,
+                         String risk,
+                         String description) {
+        tripDao.editThisTrip(
+                Objects.requireNonNull(_tripDetail.getValue()).uid,
+                tripName,
+                destination,
+                dateTrip,
+                risk,
+                description
+        );
+    }
 }

@@ -88,14 +88,54 @@ public class TripDetailFragment extends BaseFragment<FragmentTripDetailBinding, 
             startActivityForResult(intent, 1);
         });
 
-        viewModel.getTripDetail();
-        viewModel.getExpenses();
+        initViewModel();
 
+        viewBinding.btnUpdateTrip.setOnClickListener(v -> {
+            editTrip();
+        });
+    }
+
+    private void initViewModel() {
+        getData();
         observeViewModel();
     }
 
+    private void editTrip() {
+        String tripName = viewBinding.edtTripName.getText().toString();
+        String destination = viewBinding.edtDestination.getText().toString();
+        String date = viewBinding.edtDateOfTrip.getText().toString();
+        String riskOfTrip = viewBinding.cbRequiredRisk.isChecked() ? "Yes" : "No";
+        String desc = viewBinding.edtDescription.getText().toString();
+
+        viewModel.editTrip(
+                tripName,
+                destination,
+                date,
+                riskOfTrip,
+                desc
+        );
+    }
+
+    private void getData() {
+        viewModel.getTripDetail();
+        viewModel.getExpenses();
+    }
+
     private void observeViewModel() {
+        viewModel.tripExpense.observe(getViewLifecycleOwner(), expensesNew -> {
+            if (expensesNew.isEmpty()) {
+                viewBinding.rvExpense.setVisibility(View.GONE);
+                return;
+            }
+            viewBinding.rvExpense.setVisibility(View.VISIBLE);
+            //Update data to recyclerview
+            expenses.clear();
+            expenses.addAll(expensesNew);
+            expenseAdapter.notifyDataSetChanged();
+        });
+
         viewModel.tripDetail.observe(getViewLifecycleOwner(), trip -> {
+
             viewBinding.edtTripName.setText(trip.tripName);
             viewBinding.edtDestination.setText(trip.destination);
             viewBinding.edtDateOfTrip.setText(trip.dateTrip);
@@ -103,32 +143,19 @@ public class TripDetailFragment extends BaseFragment<FragmentTripDetailBinding, 
             viewBinding.cbRequiredRisk.setChecked(trip.risk.equals("Yes"));
 
             if (trip.path == null) {
-                return;
-            }
-
-            if (trip.path.isEmpty()) {
-                viewBinding.image.setVisibility(View.GONE);
             } else {
-                viewBinding.image.setVisibility(View.VISIBLE);
+                if (trip.path.isEmpty()) {
+                    viewBinding.image.setVisibility(View.GONE);
+                } else {
+                    viewBinding.image.setVisibility(View.VISIBLE);
 
-                File file = new File(trip.path);
-                if (file.exists()) {
-                    Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-                    viewBinding.image.setImageBitmap(bitmap);
+                    File file = new File(trip.path);
+                    if (file.exists()) {
+                        Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+                        viewBinding.image.setImageBitmap(bitmap);
+                    }
                 }
-
             }
-        });
-
-        viewModel.tripExpense.observe(getViewLifecycleOwner(), expensesNew -> {
-            if (expensesNew.isEmpty()) {
-                viewBinding.rvExpense.setVisibility(View.GONE);
-                return;
-            }
-            viewBinding.rvExpense.setVisibility(View.VISIBLE);
-            expenses.clear();
-            expenses.addAll(expensesNew);
-            expenseAdapter.notifyDataSetChanged();
         });
     }
 
@@ -137,7 +164,7 @@ public class TripDetailFragment extends BaseFragment<FragmentTripDetailBinding, 
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == RESULT_OK && data != null && data.getData() != null) {
             Uri uri = data.getData();
-            String filePath = getRealPathFromURI(uri);
+            String filePath = getRealPathFromImageURI(uri);
 
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(requireContext().getContentResolver(), uri);
@@ -150,7 +177,7 @@ public class TripDetailFragment extends BaseFragment<FragmentTripDetailBinding, 
         }
     }
 
-    private String getRealPathFromURI(Uri uri) {
+    private String getRealPathFromImageURI(Uri uri) {
         String[] projection = { MediaStore.Images.Media.DATA };
         Cursor cursor = requireContext().getContentResolver().query(uri, projection, null, null, null);
         int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
@@ -162,9 +189,8 @@ public class TripDetailFragment extends BaseFragment<FragmentTripDetailBinding, 
 
 
     @Override
-    public void onAddClicked(Expense expense) {
+    public void onAddExpenseToTripClicked(Expense expense) {
         viewModel.addExpenseToTrip(expense);
         viewModel.getExpenses();
-
     }
 }

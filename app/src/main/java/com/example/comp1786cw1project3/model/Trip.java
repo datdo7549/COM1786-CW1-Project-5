@@ -8,22 +8,18 @@ import androidx.room.PrimaryKey;
 public class Trip {
     @PrimaryKey(autoGenerate = true)
     public int uid;
-
     @ColumnInfo(name = "trip_name")
     public String tripName;
 
     @ColumnInfo(name = "destination")
     public String destination;
-
     @ColumnInfo(name = "date_trip")
     public String dateTrip;
-
     @ColumnInfo(name = "risk")
     public String risk;
 
     @ColumnInfo(name = "description")
     public String description;
-
     @ColumnInfo(name = "picture_path")
     public String path;
 

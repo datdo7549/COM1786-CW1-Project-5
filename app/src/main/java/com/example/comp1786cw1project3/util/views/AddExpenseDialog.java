@@ -76,7 +76,7 @@ public class AddExpenseDialog extends DialogFragment {
             } else {
                 dismiss();
                 Expense expense = new Expense(tripId, type, amount, time, comment);
-                expenseDialogListener.onAddClicked(expense);
+                expenseDialogListener.onAddExpenseToTripClicked(expense);
             }
         });
     }

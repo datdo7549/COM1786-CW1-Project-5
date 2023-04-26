@@ -53,10 +53,6 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
     }
 
     private void initView() {
-        tripAdapter = new TripAdapter(requireContext(), trips, this);
-        viewBinding.rvTrips.setAdapter(tripAdapter);
-
-
         viewBinding.btnAddNewTrip.setOnClickListener(v -> navigate(AddTripFragment.newInstance(), false));
         viewBinding.btnSearch.setOnClickListener(v -> {
             showDialogSearch();
@@ -64,6 +60,9 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
         viewBinding.btnReset.setOnClickListener(v -> {
             resetDatabase();
         });
+
+        tripAdapter = new TripAdapter(requireContext(), trips, this);
+        viewBinding.rvTrips.setAdapter(tripAdapter);
     }
 
     private void showDialogSearch() {
@@ -104,7 +103,6 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                //Do nothing
             }
         });
     }

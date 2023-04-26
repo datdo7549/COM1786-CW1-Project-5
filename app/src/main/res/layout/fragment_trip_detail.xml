@@ -39,7 +39,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="20dp"
-                android:editable="false"
                 android:paddingHorizontal="15dp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/black"
@@ -52,7 +51,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="15dp"
-                android:editable="false"
                 android:paddingHorizontal="15dp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/black"
@@ -65,7 +63,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="15dp"
-                android:editable="false"
                 android:paddingHorizontal="15dp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/black"
@@ -78,7 +75,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="15dp"
-                android:editable="false"
                 android:paddingHorizontal="15dp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/black"
@@ -102,7 +98,6 @@
                 android:id="@+id/cbRequiredRisk"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:clickable="false"
                 app:layout_constraintBottom_toBottomOf="@id/tvIsRequiredRisk"
                 app:layout_constraintStart_toEndOf="@id/tvIsRequiredRisk"
                 app:layout_constraintTop_toTopOf="@id/tvIsRequiredRisk" />
@@ -130,11 +125,22 @@
                 android:textSize="20sp"
                 app:layout_constraintTop_toBottomOf="@id/rvExpense" />
 
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnUpdateTrip"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:src="@drawable/ic_add"
+                android:textAllCaps="false"
+                android:text="Edit this trip"
+                android:background="@color/transparent"
+                app:layout_constraintTop_toBottomOf="@id/edtDescription"/>
+
+
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/lnButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/edtDescription"
+                app:layout_constraintTop_toBottomOf="@id/btnUpdateTrip"
                 android:orientation="horizontal">
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btnAddExpense"
